@@ -2,9 +2,9 @@
 /**
  * This is the webpack entry point for the test page.
  */
-import katex from '../katex.webpack.js';
-import './main.css';
-import queryString from 'query-string';
+import katex from "../katex.webpack.js";
+import "./main.css";
+import queryString from "query-string";
 
 function init() {
     const input = document.getElementById("input");
@@ -24,7 +24,7 @@ function init() {
 
     // Use `display=0` or `displayMode=0` (or `=f`/`=false`/`=n`/`=no`)
     // to turn off displayMode (which is on by default).
-    const displayQuery = (query.displayMode || query.display);
+    const displayQuery = query.displayMode || query.display;
     if (displayQuery && displayQuery.match(/^(0|f|n)/)) {
         options.displayMode = false;
     }
@@ -45,7 +45,8 @@ function init() {
     if (query.strict) {
         if (query.strict.match(/^(1|t|y|e)/)) {
             options.strict = "error";
-        } if (query.strict && query.strict.match(/^(w)/)) {
+        }
+        if (query.strict && query.strict.match(/^(w)/)) {
             options.strict = "warn";
         }
     }
@@ -108,10 +109,25 @@ function init() {
     }
 
     if (module.hot) {
-        module.hot.accept('../katex.webpack.js', reprocess);
+        module.hot.accept("../katex.webpack.js", reprocess);
     }
 }
 
 init();
+
+let latest;
+window.addEventListener("mousemove", (e) => {
+    const elements = document.elementsFromPoint(e.clientX, e.clientY);
+
+    const ref = elements.find((el) => el.classList.contains("katex-ref"));
+
+    console.log(ref);
+
+    latest?.classList.remove("hover");
+    if (ref) {
+        ref.classList.add("hover");
+        latest = ref;
+    }
+});
 
 export default katex;

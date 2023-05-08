@@ -29,6 +29,7 @@ import type {DomSpan} from "./src/domTree";
 
 import {defineSymbol} from './src/symbols';
 import defineMacro from './src/defineMacro';
+import defineFunction from './src/defineFunction';
 import {setFontMetrics} from './src/fontMetrics';
 
 declare var __VERSION__: string;
@@ -200,6 +201,10 @@ export default {
      * adds a new macro to builtin macro list
      */
     __defineMacro: defineMacro,
+    /**
+     * adds a new function to builtin function list
+     */
+    __defineFunction: defineFunction,
     /**
      * Expose the dom tree node types, which can be useful for type checking nodes.
      *

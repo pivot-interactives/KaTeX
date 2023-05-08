@@ -1,7 +1,11 @@
 // @flow
 import type Parser from "./Parser";
-import type {ParseNode, AnyParseNode, NodeType, UnsupportedCmdParseNode}
-    from "./parseNode";
+import type {
+    ParseNode,
+    AnyParseNode,
+    NodeType,
+    UnsupportedCmdParseNode,
+} from "./parseNode";
 import type Options from "./Options";
 import type {ArgType, BreakToken} from "./types";
 import type {HtmlDomNode} from "./domTree";
@@ -24,7 +28,10 @@ export type FunctionHandler<NODETYPE: NodeType> = (
 // Note: reverse the order of the return type union will cause a flow error.
 // See https://github.com/facebook/flow/issues/3663.
 
-export type HtmlBuilder<NODETYPE> = (ParseNode<NODETYPE>, Options) => HtmlDomNode;
+export type HtmlBuilder<NODETYPE> = (
+    ParseNode<NODETYPE>,
+    Options,
+) => HtmlDomNode;
 export type MathMLBuilder<NODETYPE> = (
     group: ParseNode<NODETYPE>,
     options: Options,
@@ -33,8 +40,10 @@ export type MathMLBuilder<NODETYPE> = (
 // More general version of `HtmlBuilder` for nodes (e.g. \sum, accent types)
 // whose presence impacts super/subscripting. In this case, ParseNode<"supsub">
 // delegates its HTML building to the HtmlBuilder corresponding to these nodes.
-export type HtmlBuilderSupSub<NODETYPE> =
-    (ParseNode<"supsub"> | ParseNode<NODETYPE>, Options) => HtmlDomNode;
+export type HtmlBuilderSupSub<NODETYPE> = (
+    ParseNode<"supsub"> | ParseNode<NODETYPE>,
+    Options,
+) => HtmlDomNode;
 
 export type FunctionPropSpec = {
     // The number of arguments the function takes.
@@ -169,9 +178,8 @@ export default function defineFunction<NODETYPE: NodeType>({
         argTypes: props.argTypes,
         allowedInArgument: !!props.allowedInArgument,
         allowedInText: !!props.allowedInText,
-        allowedInMath: (props.allowedInMath === undefined)
-            ? true
-            : props.allowedInMath,
+        allowedInMath:
+            props.allowedInMath === undefined ? true : props.allowedInMath,
         numOptionalArgs: props.numOptionalArgs || 0,
         infix: !!props.infix,
         primitive: !!props.primitive,
@@ -196,7 +204,9 @@ export default function defineFunction<NODETYPE: NodeType>({
  * stand-alone handler provided to `defineFunction`).
  */
 export function defineFunctionBuilders<NODETYPE: NodeType>({
-    type, htmlBuilder, mathmlBuilder,
+    type,
+    htmlBuilder,
+    mathmlBuilder,
 }: {|
     type: NODETYPE,
     htmlBuilder?: HtmlBuilder<NODETYPE>,
@@ -206,18 +216,20 @@ export function defineFunctionBuilders<NODETYPE: NodeType>({
         type,
         names: [],
         props: {numArgs: 0},
-        handler() { throw new Error('Should never be called.'); },
+        handler() {
+            throw new Error("Should never be called.");
+        },
         htmlBuilder,
         mathmlBuilder,
     });
 }
 
-export const normalizeArgument = function(arg: AnyParseNode): AnyParseNode {
+export const normalizeArgument = function (arg: AnyParseNode): AnyParseNode {
     return arg.type === "ordgroup" && arg.body.length === 1 ? arg.body[0] : arg;
 };
 
 // Since the corresponding buildHTML/buildMathML function expects a
 // list of elements, we normalize for different kinds of arguments
-export const ordargument = function(arg: AnyParseNode): AnyParseNode[] {
+export const ordargument = function (arg: AnyParseNode): AnyParseNode[] {
     return arg.type === "ordgroup" ? arg.body : [arg];
 };
