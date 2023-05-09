@@ -15,7 +15,7 @@ defineFunction({
     },
     handler({parser, funcName, token}, args) {
         return {
-            type: "html",
+            type: "enclose",
             mode: parser.mode,
             id: args[0].string,
             body: args[1],
