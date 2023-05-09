@@ -6,7 +6,7 @@ import * as mml from "../buildMathML";
 import defineFunction from "../defineFunction";
 
 defineFunction({
-    type: "enclose",
+    type: "pivot",
     names: ["\\ref"],
     props: {
         numArgs: 2,
@@ -15,7 +15,8 @@ defineFunction({
     },
     handler({parser, funcName, token}, args) {
         return {
-            type: "enclose",
+            type: "pivot",
+            label: "\\ref",
             mode: parser.mode,
             id: args[0].string,
             body: args[1],
